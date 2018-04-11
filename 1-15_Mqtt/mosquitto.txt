@@ -1,0 +1,26 @@
+mosquitto -v
+
+mosquitto_sub -h 192.168.0.3 -t /deneb
+
+mosquitto_pub -h 192.168.0.3 -t /deneb -m "Hello World!!"
+
+
+mosquitto_sub -h 172.30.1.29 -t /deneb
+
+mosquitto_pub -h 172.30.1.29 -t /deneb -m "Hello World!!"
+
+
+
+
+http://www.steves-internet-guide.com/install-mosquitto-broker/
+
+https://sivatechworld.wordpress.com/2015/06/11/step-by-step-installing-and-configuring-mosquitto-with-windows-7/
+
+
+mosquitto_sub -h broker.mqtt-dashboard.com -t "outTopic"
+
+mosquitto_pub -h broker.mqtt-dashboard.com -t "outTopic" -m 0
+
+mosquitto_sub -h 172.30.1.29 -t "inTopic"
+
+mosquitto_pub -h 172.30.1.29 -t "outTopic" -m 0
