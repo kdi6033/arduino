@@ -1,12 +1,14 @@
-rgb#include <ESP8266WiFi.h>
+//1-16-1, 1-17  두개의 프로그램을 합쳐서 만듬
+#include <stdlib.h>
+#include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
 // 아래의 6개설정은 사용자 환경에 맞게 수정하세요.
 const char* ssid = "i2r"; // 와이파이 AP, 또는 스마트폰의 핫스판 이름
 const char* password = "00000000";  // 와이파이 AP, 또는 스마트폰의 핫스판 이름
 const char* mqtt_server = "broker.mqtt-dashboard.com"; //브로커 주소
-const char* outTopic = "/kdi/inTopic"; // 이름이 중복되지 않게 설정 기록
-const char* inTopic = "/kdi/outTopic"; // 이름이 중복되지 않게 설정 기록
+const char* outTopic = "/kdi/inLight"; // 이름이 중복되지 않게 설정 기록
+const char* inTopic = "/kdi/outLight"; // 이름이 중복되지 않게 설정 기록
 const char* clientName = "980303Client";  // 다음 이름이 중복되지 않게 꼭 수정 바람 - 생년월일 추천
 
 WiFiClient espClient;
@@ -15,11 +17,18 @@ long lastMsg = 0;
 char msg[50];
 
 //int led=4; // D2 GPIO4 핀을 사용
-int led=BUILTIN_LED; // D1 mini에 있는 led를 사용
+int ledRed=12; // D6 IO12 핀을 사용
+int ledGreen=13; // D7 IO13 핀을 사용
+int ledBlue=15; // D8 IO15 핀을 사용
+int DutyRed=100;
+int DutyGreen=100;
+int DutyBlue=100;
 int timeIn=1000;  // led가 깜박이는 시간을 mqtt 통신에서 전달받아 저장
 
 void setup() {
-  pinMode(led, OUTPUT);
+  pinMode(ledRed, OUTPUT);
+  pinMode(ledGreen, OUTPUT);
+  pinMode(ledBlue, OUTPUT);
   Serial.begin(115200);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
@@ -49,6 +58,8 @@ void setup_wifi() {
 
 // 통신에서 문자가 들어오면 이 함수의 payload 배열에 저장된다.
 void callback(char* topic, byte* payload, unsigned int length) {
+  if(length < 5)
+    return;
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
@@ -57,13 +68,26 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
 
-  // payload로 들어온 문자를 정수로 바꾸기 위해 String inString에 저장후에
-  // toInt() 함수를 사용해 정수로 바꾸어 timeIn에 저장한다.
-  String inString="";
-  for (int i = 0; i < length; i++) {
-    inString += (char)payload[i];
-  }
-  timeIn=inString.toInt();
+  char szHex[2];
+  for (int i = 0; i < 2; i++) 
+    szHex[i] = (char)payload[i];
+  DutyRed = (int)strtol(szHex, NULL, 16)*4.01;
+  
+  for (int i = 2; i < 4; i++) 
+    szHex[i-2] = (char)payload[i];
+  DutyGreen = (int)strtol(szHex, NULL, 16)*4.01;
+ 
+  for (int i = 4; i < 6; i++) 
+    szHex[i-4] = (char)payload[i];
+  DutyBlue = (int)strtol(szHex, NULL, 16)*4.01;
+  
+  Serial.print("R G B   ");
+  Serial.print(DutyRed);
+  Serial.print(", ");
+  Serial.print(DutyGreen);
+  Serial.print(", ");
+  Serial.print(DutyBlue);
+  Serial.println("");
 }
 
 // mqtt 통신에 지속적으로 접속한다.
@@ -95,9 +119,8 @@ void loop() {
   }
   client.loop();
 
-  // 들어온 timeIn 값에 따라 led가 점멸하게 한다.
-  digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(timeIn);                       // wait for a second
-  digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
-  delay(timeIn); 
+  // 들어온 Duty 값에 따라 led가 색을 낸다.
+  analogWrite(ledRed, DutyRed);
+  analogWrite(ledGreen, DutyGreen);
+  analogWrite(ledBlue, DutyBlue);
 }
