@@ -1,6 +1,3 @@
-/*
- ip로 접속하면 기본적인 HelloWorld 만 출력
- */
 #include <ESP8266WiFi.h>
 
 const char* ssid = "i2r";
@@ -57,8 +54,9 @@ void loop() {
   client.flush();
 
   // Prepare the response
-  String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\n Hello World ";
-  s += "</html>\n";
+  //String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\n 안녕하세요";
+  //s += "</html>\n";
+  String s="<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/></head><body>안녕하세요!</body></html>";
 
   // Send the response to the client
   client.print(s);
