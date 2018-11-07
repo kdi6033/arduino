@@ -56,7 +56,8 @@ void loop() {
   // Prepare the response
   //String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\n 안녕하세요";
   //s += "</html>\n";
-  String s="<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/></head><body>안녕하세요!</body></html>";
+  String s="<html><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\", http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/>";
+  s=s+"<head></head><body>안녕하세요!</body></html>";
 
   // Send the response to the client
   client.print(s);
