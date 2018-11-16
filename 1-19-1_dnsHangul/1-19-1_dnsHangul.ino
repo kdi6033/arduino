@@ -6,22 +6,21 @@
 #include <EEPROM.h>
 
 /*
- * This example serves a "hello world" on a WLAN and a SoftAP at the same time.
- * The SoftAP allow you to configure WLAN parameters at run time. They are not setup in the sketch but saved on EEPROM.
- * 
- * Connect your computer or cell phone to wifi network ESP_ap with password 12345678. A popup may appear and it allow you to go to WLAN config. If it does not then navigate to http://192.168.4.1/wifi and config it there.
- * Then wait for the module to connect to your wifi and take note of the WLAN IP it got. Then you can disconnect from ESP_ap and return to your regular WLAN.
- * 
- * Now the ESP8266 is in your network. You can reach it through http://192.168.x.x/ (the IP you took note of) or maybe at http://esp8266.local too.
- * 
- * This is a captive portal because through the softAP it will redirect any http request to http://192.168.4.1/
+ * 공유기 설정에서 i2r_ap_***** 로 되어있는 ap 공유기를 선택한다. 비밀번호는 00000000 이다.
+ * 공유기를 입력하기 위해 크롬의 주소창에 "i2r.local"을 입력하여 공유기 설정을 선택한다.
+ * 또는 http://i2r.local/wifi  http://192.168.4.1 을 입력해도 된다.
+ * 입력 후 i2r.local 의 메인 페이지에 입력한 공유기의 이름과 주소가 정상적으로 출력되면
+ * 공유기 주소를 선택해 인테넷이 연결될 서버의 주소를 선택한 후 
+ * 설정에서 입력한 공유기를 선택하면 정상적으로 사용 할 수 있다.
  */
+
 
 /* Set these to your desired softAP credentials. They are not configurable at runtime */
 const char *softAP_ssid = "i2r_ap_";
 const char *softAP_password = "00000000";
 String sAP_ssid;
 char cAP_ssid[20];
+int setAP=1;// 1 이면 ap 설정중 으로 메인 페이지에 주소 표시
 
 /* hostname for mDNS. Should work at least on windows. Try http://i2r.local */
 const char *myHostname = "i2r";
