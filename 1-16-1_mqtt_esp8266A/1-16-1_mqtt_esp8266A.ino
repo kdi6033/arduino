@@ -1,4 +1,4 @@
-rgb#include <ESP8266WiFi.h>
+#include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
 // 아래의 6개설정은 사용자 환경에 맞게 수정하세요.
