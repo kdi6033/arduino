@@ -54,9 +54,10 @@ void loop() {
   client.flush();
 
   // Prepare the response
-  //String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\n 안녕하세요";
-  //s += "</html>\n";
-  String s="<html><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\", http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/>";
+  String s="<html>";
+  s=s+"<meta name='viewport' content='width=device-width, initial-scale=1.0'/>";
+  //s=s+"<meta http-equiv='refresh' content='5'/>";
+  s=s+"<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />";
   s=s+"<head></head><body>안녕하세요!</body></html>";
 
   // Send the response to the client
