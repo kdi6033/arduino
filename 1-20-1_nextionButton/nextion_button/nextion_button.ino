@@ -1,3 +1,4 @@
+//NexConfig.h 설치후 "serial1"을 "serial"로 수정해주세요.
 #include "Nextion.h"
 
 const int ledPin =  LED_BUILTIN;// the number of the LED pin
