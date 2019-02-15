@@ -33,13 +33,13 @@ void setup(void){
 void loop(void){
   HTTPClient http;    //Declare object of class HTTPClient
 
-  count++;
+  count++; 
   String  s ="http://117.16.177.40:1880/json?a=1&count=";
+  //String  s ="http://localhost:1880/json?a=1&count=";
   s+=count;
   Serial.println(s);
   http.begin(s);
-  //http.begin("http://117.16.177.40:1880/json?a=2&b=3");     //Specify request destination
-  
+ 
   int httpCode = http.GET();            //Send the request
   String payload = http.getString();    //Get the response payload
  
