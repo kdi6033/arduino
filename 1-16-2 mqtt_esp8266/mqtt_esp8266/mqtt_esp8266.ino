@@ -16,12 +16,7 @@ PubSubClient client(espClient);
 long lastMsg = 0;
 char msg[50];
 
-//int led=4; // D2 GPIO4 핀을 사용
-int led=BUILTIN_LED; // D1 mini에 있는 led를 사용
-int timeIn=1000;  // led가 깜박이는 시간을 mqtt 통신에서 전달받아 저장
-
 void setup() {
-  pinMode(led, OUTPUT);
   Serial.begin(9600);
   setup_wifi();
 
@@ -72,14 +67,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
-
-  // payload로 들어온 문자를 정수로 바꾸기 위해 String inString에 저장후에
-  // toInt() 함수를 사용해 정수로 바꾸어 timeIn에 저장한다.
-  String inString="";
-  for (int i = 0; i < length; i++) {
-    inString += (char)payload[i];
-  }
-  timeIn=inString.toInt();
 }
 
 // mqtt 통신에 지속적으로 접속한다.
@@ -110,10 +97,4 @@ void loop() {
     reconnect();
   }
   client.loop();
-
-  // 들어온 timeIn 값에 따라 led가 점멸하게 한다.
-  digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(timeIn);                       // wait for a second
-  digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
-  delay(timeIn); 
 }
