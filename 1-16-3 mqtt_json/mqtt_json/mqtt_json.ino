@@ -35,7 +35,7 @@ void setup() {
 
   //이름 자동으로 생성
   sChipID=String(ESP.getChipId(),HEX);
-  sChipID.toCharArray(cChipID,sChipID.length());
+  sChipID.toCharArray(cChipID,sChipID.length()+1);
   clientName=&cChipID[0];
   Serial.println(clientName);
 
