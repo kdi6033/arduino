@@ -13,19 +13,13 @@ const int led = 2;
 void setup(void) {
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   connectWifi()
 
   server.on("/", handleRoot);
   server.on("/on", handleOn);
   server.on("/off", handleOff);
-
-  server.on("/inline", []() {
-    digitalWrite(led, 1);
-    server.send(200, "text/plain", "this works as well");
-  });
-
   server.onNotFound(handleNotFound);
 
   server.begin();
