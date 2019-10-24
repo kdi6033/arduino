@@ -1,15 +1,11 @@
+//1-26-4 아두이노 인터넷 Web http 통신, go Home [두원공과대학교 메카트로닉스공학과 김동일교수] 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-#ifndef STASSID
-#define STASSID "i2r"
-#define STAPSK  "00000000"
-#endif
-
-const char* ssid = STASSID;
-const char* password = STAPSK;
+const char* ssid = "i2r";
+const char* password = "";
 
 ESP8266WebServer server(80);
 
@@ -18,7 +14,20 @@ const int led = 2;
 void setup(void) {
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
-  Serial.begin(115200);
+  Serial.begin(9600);
+
+  connectWifi();
+
+  server.on("/", handleRoot);
+  server.on("/on", handleOn);
+  server.on("/off", handleOff);
+  server.onNotFound(handleNotFound);
+
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
+void connectWifi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("");
@@ -32,30 +41,11 @@ void setup(void) {
   Serial.print("Connected to ");
   Serial.println(ssid);
   Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  if (MDNS.begin("esp8266")) {
-    Serial.println("MDNS responder started");
-  }
-
-  server.on("/", handleRoot);
-  server.on("/on", handleOn);
-  server.on("/off", handleOff);
-
-  server.on("/inline", []() {
-    digitalWrite(led, 1);
-    server.send(200, "text/plain", "this works as well");
-  });
-
-  server.onNotFound(handleNotFound);
-
-  server.begin();
-  Serial.println("HTTP server started");
+  Serial.println(WiFi.localIP());  
 }
 
 void loop(void) {
   server.handleClient();
-  MDNS.update();
 }
 
 void handleRoot() {
@@ -72,7 +62,7 @@ void handleRoot() {
 
 void handleOn() {
   digitalWrite(led, 0);
-  handleRoot();
+  handleRoot(); // 홈페이지 주소창은 원래 홈페이지로 가지않습니다. 다음 유튜브에서 해결합니다.
 }
 
 void handleOff() {
