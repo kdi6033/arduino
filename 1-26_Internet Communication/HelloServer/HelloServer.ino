@@ -37,7 +37,7 @@ void setup(void) {
   digitalWrite(led, 1);
   Serial.begin(9600);
   
-  connectWifi()
+  connectWifi();
 
   server.on("/", handleRoot);
   server.on("/inline", []() {
