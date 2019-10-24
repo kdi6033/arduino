@@ -3,13 +3,8 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-#ifndef STASSID
-#define STASSID "i2r"
-#define STAPSK  "00000000"
-#endif
-
-const char* ssid = STASSID;
-const char* password = STAPSK;
+const char* ssid = "i2r";
+const char* password = "";
 
 ESP8266WebServer server(80);
 
@@ -40,7 +35,22 @@ void handleNotFound() {
 void setup(void) {
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
-  Serial.begin(115200);
+  Serial.begin(9600);
+  
+  connectWifi()
+
+  server.on("/", handleRoot);
+  server.on("/inline", []() {
+    digitalWrite(led, 1);
+    server.send(200, "text/plain", "this works as well");
+  });
+  server.onNotFound(handleNotFound);
+
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
+void connectWifi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("");
@@ -55,25 +65,8 @@ void setup(void) {
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-
-  if (MDNS.begin("esp8266")) {
-    Serial.println("MDNS responder started");
-  }
-
-  server.on("/", handleRoot);
-
-  server.on("/inline", []() {
-    digitalWrite(led, 1);
-    server.send(200, "text/plain", "this works as well");
-  });
-
-  server.onNotFound(handleNotFound);
-
-  server.begin();
-  Serial.println("HTTP server started");
 }
 
 void loop(void) {
   server.handleClient();
-  MDNS.update();
 }
