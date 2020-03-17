@@ -20,6 +20,7 @@ char cAP_ssid[20];
 char cChipID[10]; // Json에서 chipid를 고유 ID로 사용
 
 boolean connect;
+unsigned long lastConnectTry = 0;
 const int led = 2;
 int bootMode=0; //0:station  1:AP
 
@@ -106,6 +107,15 @@ int connectWifi() {
 
 void loop(void) {
   server.handleClient();
+
+  long now = millis();
+  //6초에 한번 와이파이 끊기면 다시 연결
+  unsigned int sWifi = WiFi.status();
+  if (sWifi == WL_IDLE_STATUS && now > (lastConnectTry + 60000) && strlen(ssid) > 0 ) {
+    lastConnectTry=now;
+    Serial.println ( "Connect requested" );
+    connectWifi();
+  }
 
   if ( digitalRead(TRIGGER_PIN) == LOW ) 
     factoryDefault();
