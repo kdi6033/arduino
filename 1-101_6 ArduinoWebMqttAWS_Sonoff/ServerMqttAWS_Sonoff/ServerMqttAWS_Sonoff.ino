@@ -56,7 +56,6 @@ int relayPower=0;
 // 사물 인증서 (파일 이름: xxxxxxxxxx-certificate.pem.crt)
 const char cert_str[] PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
-2C72J9fylSWjz8TwJb4PVgv77gs9QraTCZWt+Lo3IftgJJHOM0R9Cv8+/BMo/yVu
 uhJYX28+7PORM0FHMFESTGYiccyii1Z6Cj2otg59a770RU+GlDJ0t80xM3THavPa
 Wa69k6H+F6gGOz9EUMKsGHvR97ZfX3gUHDkV0MsrOx78u7KO6ASTyLHq2caDoA==
 -----END CERTIFICATE-----
@@ -64,9 +63,6 @@ Wa69k6H+F6gGOz9EUMKsGHvR97ZfX3gUHDkV0MsrOx78u7KO6ASTyLHq2caDoA==
 // 사물 인증서 프라이빗 키 (파일 이름: xxxxxxxxxx-private.pem.key)
 const char key_str[] PROGMEM = R"EOF(
 -----BEGIN RSA PRIVATE KEY-----
-nR9xBsDoTprsZC9M1/YaEQKBgQCFDgIlVa3h5YwimJ/U1cD9DeVGpUaRWPfNajxy
-WFvc+/LmP0K615w0La+pni12TojEziNqVsYlNGg65+y2y9gicH0L84Zr6IEHOaxH
-tvSthrwTgQfe5Pf22d2WJV+dt3xC+AR3SgpoiU6LVwvZJ5iLj6yn69ysMdtxfQjz
 7fAncQKBgQC2I45sOS6xVx1+KOhQ+3QvST4O2hrw3sedA3vlorS7Wg0vajSZFELo
 qjKDU8njRc8Lgdx/K71XIlo+CoBoLflxUHvmYpCN1gycyWJMvgKbnApVwttJm30z
 zJQkfoMU4uPy/L2JJRyIpLKKxlVAqhYpw0koEMwTI7+cJsFe5BmNEw==
@@ -76,9 +72,6 @@ zJQkfoMU4uPy/L2JJRyIpLKKxlVAqhYpw0koEMwTI7+cJsFe5BmNEw==
 // Amazon Trust Services(ATS) 엔드포인트 CA 인증서 (서버인증 > "RSA 2048비트 키: Amazon Root CA 1" 다운로드)
 const char ca_str[] PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
-A4IBAQCY8jdaQZChGsV2USggNiMOruYou6r4lK5IpDB/G/wkjUu0yKGX9rbxenDI
-U5PMCCjjmCXPI6T53iHTfIUJrU6adTrCC2qJeHZERxhlbI1Bjjt/msv0tadQ1wUs
-N+gDS63pYaACbvXy8MWy7Vu33PqUXHeeE6V/Uq2V8viTO96LXFvKWlJbYK8U90vv
 o/ufQJVtMVT8QtPHRh8jrdkPSHCa2XV4cdFyQzR1bldZwgJcJmApzyMZFo6IQ6XU
 5MsI+yMRQ+hDKXJioaldXgjUkK642M4UwtBV8ob2xJNDd2ZhwLnoQdeXeGADbkpy
 rqXRfboQnoZsG4q5WTP468SQvvG5
@@ -86,11 +79,11 @@ rqXRfboQnoZsG4q5WTP468SQvvG5
 )EOF";
 
 void setup(void) {
-  // sonoff variable
-  int gpio13Led = 13;
-  int gpio12Relay = 12;
-  int relayPower=0;
-
+  // preparing sonoff GPIOs
+  pinMode(gpio13Led, OUTPUT);
+  digitalWrite(gpio13Led, HIGH);
+  pinMode(gpio12Relay, OUTPUT);
+  digitalWrite(gpio12Relay, HIGH);
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   digitalWrite(led, 1);
@@ -262,6 +255,7 @@ void AWSmqtt() {
   }
   client.loop();
 
+  /*
   long now = millis();
   if (now - lastMsg > 5000) {
     lastMsg = now;
@@ -271,6 +265,7 @@ void AWSmqtt() {
     Serial.println(msg);
     client.publish(outTopic, msg);
   }
+  */
 }
 
 void loop(void) {
@@ -279,14 +274,6 @@ void loop(void) {
   long now = millis();
   //6초에 한번 와이파이 끊기면 다시 연결
   unsigned int sWifi = WiFi.status();
-  if (now - lastMsg > 5000) {
-    lastMsg = now;
-    ++value;
-    snprintf (msg, 75, "hello world #%ld", value);
-    Serial.print("Publish message: ");
-    Serial.println(msg);
-    client.publish("outTopic", msg);
-  }
   if (sWifi == WL_IDLE_STATUS && now > (lastConnectTry + 60000) && strlen(ssid) > 0 ) {
     lastConnectTry=now;
     Serial.println ( "Connect requested" );
