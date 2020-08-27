@@ -1,8 +1,7 @@
 ## 인터넷 시계 만들기
 
 인터넷에 연결된 아두이노로 현재 시간을 가져와 표시한다.
-아두이노 OTA 메뉴얼 : https://arduino-esp8266.readthedocs.io/en/latest/ota_updates/readme.html   
-유튜브 : 
+아두이노 OTA 메뉴얼 : https://github.com/kdi6033/arduino/tree/master/1-33%20Internet%20Clock-Arduino%20ESP8266
 
 아두이노 프로그램
 ```
