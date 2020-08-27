@@ -1,7 +1,7 @@
 ## OTA Updates
 
 인터넷에 연결된 아두이노 프로그램을 원격으로 올릴 수 있다.
-아두이노 OTA 메뉴얼 : https://arduino-esp8266.readthedocs.io/en/latest/ota_updates/readme.html
+아두이노 OTA 메뉴얼 : https://arduino-esp8266.readthedocs.io/en/latest/ota_updates/readme.html   
 유튜브 : 
 
 BasicOTA-i2r.ino
