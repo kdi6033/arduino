@@ -9,9 +9,9 @@ void setup() {
   Serial.println("\nVery basic Spiffs example, writing 10 lines to SPIFFS filesystem, and then read them back");
   SPIFFS.begin();
   // Next lines have to be done ONLY ONCE!!!!!When SPIFFS is formatted ONCE you can comment these lines out!!
-  Serial.println("Please wait 30 secs for SPIFFS to be formatted");
-  SPIFFS.format();
-  Serial.println("Spiffs formatted");
+  //Serial.println("Please wait 30 secs for SPIFFS to be formatted");
+  //SPIFFS.format();
+  //Serial.println("Spiffs formatted");
 }
 
 void loop() {

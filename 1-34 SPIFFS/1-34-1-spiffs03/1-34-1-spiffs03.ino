@@ -79,8 +79,8 @@ void bootWifiStation() {
     delay(500);
     Serial.print(".");
     //공장리셋
-    //if ( digitalRead(TRIGGER_PIN) == LOW ) 
-      //factoryDefault();
+    if ( digitalRead(TRIGGER_PIN) == LOW ) 
+      factoryDefault();
   }
   digitalWrite(led, 0);
   Serial.println("");

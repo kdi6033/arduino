@@ -7,24 +7,31 @@ void setup() {
   Serial.println("\nVery basic Spiffs example, writing 10 lines to SPIFFS filesystem, and then read them back");
   SPIFFS.begin();
   // Next lines have to be done ONLY ONCE!!!!!When SPIFFS is formatted ONCE you can comment these lines out!!
-  //Serial.println("Please wait 30 secs for SPIFFS to be formatted");
-  //SPIFFS.format();
-  //Serial.println("Spiffs formatted");
+  Serial.println("Please wait 30 secs for SPIFFS to be formatted");
+  SPIFFS.format();
+  Serial.println("Spiffs formatted");
 
+  File f;
+  /*
   // open file for writing
-  File f = SPIFFS.open("/ssid.txt", "w");
+  f = SPIFFS.open("/ssid.txt", "w");
   if (!f) {
       Serial.println("file open failed");
   }
-  f.print("test1234");
+  f.println("ssid1234");
+  f.println("pw4567");
   f.close();
+  */
 
   f = SPIFFS.open("/ssid.txt", "r");
   if (!f) {
       Serial.println("file open failed");
   }  Serial.println("====== Reading from SPIFFS file =======");
-  String s=f.readStringUntil('\n');
-  Serial.println(s);
+  String ssid=f.readStringUntil('\n');
+  Serial.println("ssid : "+ssid);
+  String pw=f.readStringUntil('\n');
+  Serial.println("password : "+pw);
+  SPIFFS.end();
 }
 
 void loop() {
