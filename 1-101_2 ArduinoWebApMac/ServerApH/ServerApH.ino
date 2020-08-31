@@ -14,8 +14,8 @@
 
 #define TRIGGER_PIN 0 // trigger pin 0(D3) 2(D4)
 /* Set these to your desired credentials. */
-const char *softAP_ssid = "i2r-";
-const char *softAP_password = "";
+char *softAP_ssid = "i2r-";
+char *softAP_password = "";
 char ssid[32] = "";
 char password[32] = "";
 /* Soft AP network parameters */
@@ -48,7 +48,7 @@ void setup(void) {
   sAP_ssid=String(softAP_ssid)+sMac;
   sAP_ssid.toCharArray(cAP_ssid,sAP_ssid.length()+1);
   softAP_ssid=&cAP_ssid[0];
-  //clientName=softAP_ssid; //mqtt 통신에서 사용
+  clientName=softAP_ssid; //mqtt 통신에서 사용
   Serial.println(sMac);
   Serial.println(softAP_ssid);
 
