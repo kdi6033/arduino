@@ -1,5 +1,9 @@
 /** Handle root or redirect to captive portal */
+// 텍스트 변환 : http://davidjwatts.com/youtube/esp8266/esp-convertHTM.html#
+//              https://tomeko.net/online_tools/cpp_text_escape.php?lang=en
+// 유튜브 : https://www.youtube.com/watch?v=FyPZ29wgD7Y
 
+const char index_html[] PROGMEM={"<!DOCTYPE html>\n<html>\n<head>\n  <link rel=\"stylesheet\" href=\"/html/styles.css\">\n</head>\n<body>\n\n<h1>This is a heading</h1>\n<p>This is a paragraph.</p>\n\n</body>\n</html>\n"};
 void handleRoot() {
   String s; 
   s="<meta name='viewport' content='width=device-width, initial-scale=1.0'/>";
@@ -15,7 +19,8 @@ void handleRoot() {
     s=s+"<br><br>AP & IP :&emsp;"+String(softAP_ssid)+"&emsp;<a href='http://"+WiFi.localIP().toString()+"'/>"+WiFi.localIP().toString()+"</a>";
   s=s+"<p><a href='/wifi'>네트웍공유기를 바꾸려면 누르세요.</a></p>";
 
-  server.send(200, "text/html", s);
+  //server.send(200, "text/html", s);
+  server.send(200, "text/html", index_html);
 }
 
 
