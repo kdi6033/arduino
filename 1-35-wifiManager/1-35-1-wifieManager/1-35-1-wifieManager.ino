@@ -26,15 +26,29 @@ void setup() {
  
   // put your setup code here, to run once:
   Serial.begin(115200);
-  
-  pinMode(LED, OUTPUT);
-  // start ticker with 0.5 because we start in AP mode and try to connect
-  ticker.attach(0.6, tick);
 
   // AP 이름 자동으로 만듬 i2r-chipid
   sChipId = "i2r-"+String(ESP.getChipId(),HEX);
   sChipId.toCharArray(cChipId,sChipId.length()+1);
   Serial.println(sChipId);
+
+  wifiManager();
+
+  server.on("/", handleRoot);
+  server.on("/on", handleOn);
+  server.on("/off", handleOff);
+  server.on("/scan", handleScan);
+  server.on("/wifi", handleWifi);
+  server.onNotFound(handleNotFound);
+
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
+void wifiManager() {
+  pinMode(LED, OUTPUT);
+  // start ticker with 0.5 because we start in AP mode and try to connect
+  ticker.attach(0.6, tick);
 
   //WiFiManager
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
@@ -53,18 +67,7 @@ void setup() {
   ticker.detach();
   //keep LED on
 
-  
-  digitalWrite(LED, LOW);
-
-  server.on("/", handleRoot);
-  server.on("/on", handleOn);
-  server.on("/off", handleOff);
-  server.on("/scan", handleScan);
-  server.on("/wifi", handleWifi);
-  server.onNotFound(handleNotFound);
-
-  server.begin();
-  Serial.println("HTTP server started");
+  digitalWrite(LED, LOW);  
 }
 
 void loop() {
