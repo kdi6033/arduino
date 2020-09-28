@@ -45,7 +45,7 @@ void setup() {
 
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
-  timer.setInterval(1000,gpsData);
+  timer.setInterval(3000,gpsData);
 }
 
 void setup_wifi() {

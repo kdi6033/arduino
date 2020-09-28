@@ -9,8 +9,8 @@ SimpleTimer timer;
 const char* ssid = "i2r"; // 와이파이 AP, 또는 스마트폰의 핫스판 이름
 const char* password = "00000000";  // 와이파이 AP, 또는 스마트폰의 핫스판 이름
 const char* mqtt_server = "broker.mqtt-dashboard.com"; //브로커 주소
-const char* outTopic = "/kdi/inTopic"; // 이름이 중복되지 않게 설정 기록
-const char* inTopic = "/kdi/outTopic"; // 이름이 중복되지 않게 설정 기록
+const char* outTopic = "/kdi/outTopic"; // 이름이 중복되지 않게 설정 기록
+const char* inTopic = "/kdi/inTopic"; // 이름이 중복되지 않게 설정 기록
 const char* clientName = "";  // setup 함수에서 자동생성
 String sChipID;
 char cChipID[20];
@@ -45,7 +45,7 @@ void setup() {
 
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
-  //timer.setInterval(1000,gpsData);
+  timer.setInterval(3000,gpsData);
 }
 
 void setup_wifi() {
@@ -87,6 +87,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 // mqtt 통신에 지속적으로 접속한다.
+
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
