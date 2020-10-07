@@ -57,7 +57,7 @@ void wifiScan() {
   String s1="http://192.168.0.",s;
 
   count=0;
-  for(int i=1;i<30;i++) {
+  for(int i=1;i<255;i++) {
     s=s1+String(i)+"/scan"; 
     Serial.println(s);
     if ((WiFi.status() == WL_CONNECTED)) {
