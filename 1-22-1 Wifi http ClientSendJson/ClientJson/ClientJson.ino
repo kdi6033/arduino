@@ -35,12 +35,13 @@ void setup(void){
 }
 
 void loop(void){
+  WiFiClient client;
   HTTPClient http;    //Declare object of class HTTPClient
 
   count++;
   s="http://192.168.4.1/json?j={\"count\":";
   s = s + count + "}";
-  http.begin(s);   
+  http.begin(client,s);   
   
   int httpCode = http.GET();            //Send the request
   payload = http.getString();    //Get the response payload

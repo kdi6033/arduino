@@ -31,6 +31,7 @@ void setup(void){
 }
 
 void loop(void){
+  WiFiClient client;
   HTTPClient http;    //Declare object of class HTTPClient
 
   count++; 
@@ -38,7 +39,7 @@ void loop(void){
   //String  s ="http://localhost:1880/json?a=1&count=";
   s+=count;
   Serial.println(s);
-  http.begin(s);
+  http.begin(client,s);
  
   int httpCode = http.GET();            //Send the request
   String payload = http.getString();    //Get the response payload

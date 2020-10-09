@@ -29,9 +29,10 @@ void setup(void){
 }
 
 void loop(void){
+  WiFiClient client;
   HTTPClient http;    //Declare object of class HTTPClient
  
-  http.begin("http://192.168.0.251/");     //Specify request destination
+  http.begin(client,"http://192.168.0.251/");     //Specify request destination
   
   int httpCode = http.GET();            //Send the request
   String payload = http.getString();    //Get the response payload
