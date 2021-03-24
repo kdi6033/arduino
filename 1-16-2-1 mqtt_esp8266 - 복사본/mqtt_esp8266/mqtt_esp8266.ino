@@ -1,6 +1,5 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include <ArduinoJson.h>
 #include <Ticker.h>
 Ticker ticker;
 
@@ -16,11 +15,6 @@ const char* inTopic = "/kdi/inTopic"; // 이름이 중복되지 않게 설정 �
 const char* clientName = "";  // setup 함수에서 자동생성
 String sChipID;
 char cChipID[20];
-
-//json을 위한 설정
-StaticJsonDocument<200> doc;
-DeserializationError error;
-JsonObject root;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -38,10 +32,9 @@ void tick()
 }
 
 void setup() {
-  pinMode(D4, OUTPUT);
   Serial.begin(9600);
   setup_wifi();
-  //ticker.attach(3, tick);  //0.1 초도 가능
+  ticker.attach(3, tick);  //0.1 초도 가능
   //ticker.detach();
 
   //이름 자동으로 생성
@@ -82,19 +75,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
-
-  String s;
-  deserializeJson(doc,payload);
-  root = doc.as<JsonObject>();
-  const char* sChipidin = root["chipid"];
-  if( sChipID.equals(sChipidin)) {
-    int onValue = root["on"];
-    Serial.println(onValue);
-    if( onValue==1) 
-      digitalWrite(D4, 0);
-    else
-      digitalWrite(D4, 1);
-  }
 }
 
 // mqtt 통신에 지속적으로 접속한다.
