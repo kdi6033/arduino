@@ -1,0 +1,673 @@
+[
+    {
+        "id": "eae499535170fc90",
+        "type": "debug",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "f36ed7b74f20e690",
+        "type": "mqtt in",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "topic": "/picture",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "1eccf5707af35313",
+        "nl": false,
+        "rap": false,
+        "x": 90,
+        "y": 260,
+        "wires": [
+            [
+                "90d03728c2951662",
+                "d0b799a7e6313ef6"
+            ]
+        ]
+    },
+    {
+        "id": "c06142b88c1138bb",
+        "type": "mqtt out",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "topic": "TakeAPicture",
+        "qos": "0",
+        "retain": "false",
+        "broker": "1eccf5707af35313",
+        "x": 270,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "58ed64f485f3a799",
+        "type": "mqtt out",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "topic": "JSONConfig",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1eccf5707af35313",
+        "x": 310,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "8626395a7cb58448",
+        "type": "inject",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload",
+                "v": "",
+                "vt": "date"
+            },
+            {
+                "p": "topic",
+                "v": "",
+                "vt": "string"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 120,
+        "wires": [
+            [
+                "58ed64f485f3a799"
+            ]
+        ]
+    },
+    {
+        "id": "393bea2a337bdd08",
+        "type": "ui_template",
+        "z": "191d6938e12e2258",
+        "group": "3b1668c732b0d975",
+        "name": "from 라즈베리",
+        "order": 2,
+        "width": "6",
+        "height": "6",
+        "format": "<img alt=\"HTTP Snap\" src=\"data:image/jpg;base64,{{msg.payload}}\" />\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "x": 460,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0c8a2ba608fca544",
+        "type": "ui_button",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "group": "3b1668c732b0d975",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "사진찍기",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "x": 100,
+        "y": 180,
+        "wires": [
+            [
+                "c06142b88c1138bb"
+            ]
+        ]
+    },
+    {
+        "id": "c9d4689e26a7f47d",
+        "type": "file",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "filename": "d:/test.jpeg",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "base64",
+        "x": 450,
+        "y": 360,
+        "wires": [
+            [
+                "704e0cccbe3a4da6"
+            ]
+        ]
+    },
+    {
+        "id": "677c9a3994c69d70",
+        "type": "function",
+        "z": "191d6938e12e2258",
+        "name": "findOneAndUpdate",
+        "func": "var time = new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' });\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nnewMsg.payload    = [{ 'email' : 'kdi6033@gmail.com'}, {$set:{ 'picture':msg.payload, 'time':time}} ];\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 440,
+        "wires": [
+            [
+                "2cd09fb9c92826a5"
+            ]
+        ]
+    },
+    {
+        "id": "bc4ddaeb2e3770f5",
+        "type": "file",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "filename": "d:/test.txt",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "ascii",
+        "x": 440,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6b2084c171f204b2",
+        "type": "comment",
+        "z": "191d6938e12e2258",
+        "name": "이미지 저장",
+        "info": "",
+        "x": 110,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "c06470de60ae3ff0",
+        "type": "file in",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "filename": "d:/test.txt",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "binary",
+        "allProps": false,
+        "x": 320,
+        "y": 560,
+        "wires": [
+            [
+                "32dc5c2c502e6470"
+            ]
+        ]
+    },
+    {
+        "id": "a0972db6516a6035",
+        "type": "inject",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 560,
+        "wires": [
+            [
+                "c06470de60ae3ff0"
+            ]
+        ]
+    },
+    {
+        "id": "66235dd6bcde33f7",
+        "type": "inject",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 614,
+        "wires": [
+            [
+                "f036ddac9e4b7045"
+            ]
+        ]
+    },
+    {
+        "id": "ffd708c6f0e4dbd0",
+        "type": "template",
+        "z": "191d6938e12e2258",
+        "name": "Image in",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<img src=\"data:image/png;base64,{{payload}}\"style=\"width=\"569\" height=\"197\"\"/>",
+        "output": "str",
+        "x": 660,
+        "y": 614,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f036ddac9e4b7045",
+        "type": "file in",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "filename": "d:/test.jpeg",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 330,
+        "y": 614,
+        "wires": [
+            [
+                "4ca814785c821e01"
+            ]
+        ]
+    },
+    {
+        "id": "a3203e495b232217",
+        "type": "comment",
+        "z": "191d6938e12e2258",
+        "name": "이미지 보여줌",
+        "info": "",
+        "x": 130,
+        "y": 507,
+        "wires": []
+    },
+    {
+        "id": "20c005f4a1312c66",
+        "type": "inject",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 694,
+        "wires": [
+            [
+                "c13f50ca82c879a2"
+            ]
+        ]
+    },
+    {
+        "id": "c13f50ca82c879a2",
+        "type": "function",
+        "z": "191d6938e12e2258",
+        "name": "findOne",
+        "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'email' : 'kdi6033@gmail.com'};\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 694,
+        "wires": [
+            [
+                "1c69e3db997442d1"
+            ]
+        ]
+    },
+    {
+        "id": "f22d049c3ff6bdde",
+        "type": "function",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "func": "var newMsg={};\nnewMsg.payload=msg.payload.picture.toString();\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 694,
+        "wires": [
+            [
+                "3a717f447e63d1eb",
+                "ffd708c6f0e4dbd0"
+            ]
+        ]
+    },
+    {
+        "id": "704e0cccbe3a4da6",
+        "type": "function",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "func": "msg.payload=\"d:/\"+\"test.jpeg\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 360,
+        "wires": [
+            [
+                "c1f75ab36f714b33"
+            ]
+        ]
+    },
+    {
+        "id": "c7217e1659a41345",
+        "type": "ui_text",
+        "z": "191d6938e12e2258",
+        "group": "3b1668c732b0d975",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "AI 결과",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 950,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "2cd09fb9c92826a5",
+        "type": "mongodb2 in",
+        "z": "191d6938e12e2258",
+        "service": "_ext_",
+        "configNode": "2d7c183a9cea8d4d",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 910,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1c69e3db997442d1",
+        "type": "mongodb2 in",
+        "z": "191d6938e12e2258",
+        "service": "_ext_",
+        "configNode": "2d7c183a9cea8d4d",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 410,
+        "y": 694,
+        "wires": [
+            [
+                "f22d049c3ff6bdde"
+            ]
+        ]
+    },
+    {
+        "id": "99e0700920bd358b",
+        "type": "comment",
+        "z": "191d6938e12e2258",
+        "name": "참조사이트",
+        "info": "",
+        "x": 100,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "c1f75ab36f714b33",
+        "type": "cocossd",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "x": 760,
+        "y": 360,
+        "wires": [
+            [
+                "eae499535170fc90",
+                "c7217e1659a41345",
+                "51aa30e05e513a69"
+            ]
+        ]
+    },
+    {
+        "id": "90d03728c2951662",
+        "type": "image",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 780,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "32dc5c2c502e6470",
+        "type": "image",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 500,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "3a717f447e63d1eb",
+        "type": "image",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 700,
+        "y": 694,
+        "wires": []
+    },
+    {
+        "id": "d0b799a7e6313ef6",
+        "type": "base64",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "action": "",
+        "property": "payload",
+        "x": 280,
+        "y": 260,
+        "wires": [
+            [
+                "393bea2a337bdd08",
+                "bc4ddaeb2e3770f5",
+                "c9d4689e26a7f47d"
+            ]
+        ]
+    },
+    {
+        "id": "4ca814785c821e01",
+        "type": "base64",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "action": "",
+        "property": "payload",
+        "x": 500,
+        "y": 614,
+        "wires": [
+            [
+                "ffd708c6f0e4dbd0"
+            ]
+        ]
+    },
+    {
+        "id": "51aa30e05e513a69",
+        "type": "switch",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "person",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 440,
+        "wires": [
+            [
+                "8c205f607f4fc4fa"
+            ]
+        ]
+    },
+    {
+        "id": "8c205f607f4fc4fa",
+        "type": "file in",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "filename": "d:/test.jpeg",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 430,
+        "y": 440,
+        "wires": [
+            [
+                "e7be58b3b58bdf49"
+            ]
+        ]
+    },
+    {
+        "id": "e7be58b3b58bdf49",
+        "type": "base64",
+        "z": "191d6938e12e2258",
+        "name": "",
+        "action": "",
+        "property": "payload",
+        "x": 580,
+        "y": 440,
+        "wires": [
+            [
+                "677c9a3994c69d70"
+            ]
+        ]
+    },
+    {
+        "id": "1eccf5707af35313",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "tls": "509a45a9.089bbc",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3b1668c732b0d975",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "1c815eca37c1fa35",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2d7c183a9cea8d4d",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "admin",
+        "options": "",
+        "parallelism": ""
+    },
+    {
+        "id": "509a45a9.089bbc",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "74eb3c21934f2c65b547face5186127768f08473410840b612e629334d560cd8-certificate.pem.crt",
+        "keyname": "74eb3c21934f2c65b547face5186127768f08473410840b612e629334d560cd8-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "1c815eca37c1fa35",
+        "type": "ui_tab",
+        "name": "cameras",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    }
+]
