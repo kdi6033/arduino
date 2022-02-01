@@ -140,3 +140,69 @@ void loop() {
 
 }
 ```
+
+## 1.4 Web 프로그램
+아두이노로 웹 프로그램을 만들어 크롬에서 IP 주소를 가지고 아두이노를 직접 접속한다.
+```
+//wifiWebServer.ino
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+
+char ssid[40] = "405902-2.4G";
+char password[50] = "k01033887147";
+IPAddress apIP(192, 168, 4, 1);
+IPAddress netMsk(255, 255, 255, 0);
+
+ESP8266WebServer server(80);
+
+void bootWifiAp() {
+  /* Soft AP network parameters */
+  Serial.println("AP Mode");
+  WiFi.mode(WIFI_AP);
+  WiFi.softAPConfig(apIP, apIP, netMsk);
+  WiFi.softAP("testAP", "");
+  delay(500); // Without delay I've seen the IP address blank
+  Serial.print("AP IP address: ");
+  Serial.println(WiFi.softAPIP().toString());
+}
+
+void bootWifiStation() {
+  //referance: https://www.arduino.cc/en/Reference/WiFiStatus
+  //WL_NO_SHIELD:255 WL_IDLE_STATUS:0 WL_NO_SSID_AVAIL:1 WL_SCAN_COMPLETED:2
+  //WL_CONNECTED:3 WL_CONNECT_FAILED:4 WL_CONNECTION_LOST:5 WL_DISCONNECTED:6
+  //WiFi 연결
+  Serial.println("Station Mode");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP().toString());
+}
+
+void setup() {
+  Serial.begin(9600);
+  //bootWifiAp();
+  bootWifiStation();
+  server.on("/", handleRoot);
+  
+  server.begin();
+}
+
+void loop() {
+  server.handleClient();
+
+}
+```
+```
+//handleHttp
+void handleRoot() {
+  server.send(200, "text/html","Arduino Web Server");
+}
+```
