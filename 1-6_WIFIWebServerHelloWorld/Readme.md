@@ -8,6 +8,7 @@ AP모드란 공유기에서 내부 IP를 할당하지 않고 전달만 하게 �
 ## 1.2 Station 모드
 기존 AP(공유기)에 접속하는 방식이다. 공유기에서 DHCP로 IP를 할당 받을 수도 있고, 공유기 대역의 IP를 Static으로 설정할 수도 있다. 우리가 평상시 가정에서 사용하는 것이 AP 모드 입니다.
 
+다음은 유튜브에 소개한 와이파이 연결 프로그램 입니다. Statin 모드로 접속하여 AP에서 DHCP로 할당된 IP로 접속하면 여기서 제공하는 웹페이지를 볼수 있습니다.
 ## 아두이노 소스 프로그램 
 
 ```
@@ -80,6 +81,62 @@ void loop() {
 
   // The client will actually be disconnected 
   // when the function returns and 'client' object is detroyed  
+
+}
+```
+## 1.3 아두이노 Station, AP 모드 기본프로그램
+아두이노 프로그램에서 "파일->예제->ESP8266WiFi->WiFiClient.ino" 을 열고 와이파이 접속을 프로그램 해 봅니다.
+
+## 1.4 아두이노 Station, AP 모드 프로그램
+모든 무선통신 CPU는 고유의 mac address를 가지고 있습니다. 그러므로 제 프로그램에서는 이를 CPU를 구성하는 고유의 이름으로 사용하면 프로그램에서 중복되는 일이 없습니다. 이 이름으로 와이파이 무선에 접속합니다.
+프로그램에서 ssid, password는 사용하고 있는 AP의 정보를 입력해서 사용하세요.
+```
+#include <ESP8266WiFi.h>
+
+char ssid[40] = "**************";
+char password[50] = "******************";
+IPAddress apIP(192, 168, 4, 1);
+IPAddress netMsk(255, 255, 255, 0);
+
+void bootWifiAp() {
+  /* Soft AP network parameters */
+  Serial.println("AP Mode");
+  WiFi.mode(WIFI_AP);
+  WiFi.softAPConfig(apIP, apIP, netMsk);
+  WiFi.softAP("testAP", "");
+  delay(500); // Without delay I've seen the IP address blank
+  Serial.print("AP IP address: ");
+  Serial.println(WiFi.softAPIP().toString());
+}
+
+void bootWifiStation() {
+  //referance: https://www.arduino.cc/en/Reference/WiFiStatus
+  //WL_NO_SHIELD:255 WL_IDLE_STATUS:0 WL_NO_SSID_AVAIL:1 WL_SCAN_COMPLETED:2
+  //WL_CONNECTED:3 WL_CONNECT_FAILED:4 WL_CONNECTION_LOST:5 WL_DISCONNECTED:6
+  //WiFi 연결
+  Serial.println("Station Mode");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP().toString());
+}
+
+void setup() {
+  Serial.begin(9600);
+  bootWifiAp();
+  //bootWifiStation();
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
 
 }
 ```
