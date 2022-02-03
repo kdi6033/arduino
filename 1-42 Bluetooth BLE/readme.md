@@ -5,7 +5,7 @@
 ---
 1. ESP32 DEVKIT V1  2개
 
-##동작원리
+## 동작원리
 ---
 1. Server ESP32가 주변에 자신의 정보(UUID)를 계속해서 advertising을 한다.
 2. Client ESP32가 필요한 UUID를 발견하면 연결을 시도한다.
