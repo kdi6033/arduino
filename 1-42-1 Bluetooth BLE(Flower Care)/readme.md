@@ -14,9 +14,10 @@
 2. **ESP32( client )가 필요한 UUID, Mac Adress를 발견하면 연결을 시도한다.**
 3. **연결점에서 Flower Care는 advertising을 중지하고 ESP32와 연결한다.**
 4. **Flower Care에 내장된 센서들의 real-time data들을 ESP32가 Tx로 수신한다.**
-5. **일정 주기마다 데이터를 수신하고, 시리얼 모니터에 출력한다.**
+5. **일정 주기마다 데이터를 수신.출력하고, Deep-Sleep( 저전력 )모드에 들어간다.**
+
 
 ## 관련링크
 ---
-* Flower Care : <https://github.com/vrachieru/xiaomi-flower-care-api>
+* Flower Care( real-time data ) : <https://github.com/vrachieru/xiaomi-flower-care-api>
 
