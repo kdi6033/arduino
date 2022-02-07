@@ -8,3 +8,429 @@
 
 ### 동작
 5초마다 사진을 찍고 MONGODB에 데이터를 전송
+
+### node-red
+*node-red 불러오기(node-red.txt)
+```
+[
+    {
+        "id": "20d7bb61849c8943",
+        "type": "tab",
+        "label": "5초 cam",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "65edf2f1dc5a71d6",
+        "type": "mqtt in",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "topic": "out",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "f15d66b3.c7edf8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 280,
+        "wires": [
+            [
+                "fd390e2f3f28a5c0",
+                "c9fd1c6cb40548ce"
+            ]
+        ]
+    },
+    {
+        "id": "fa2a6389e9714847",
+        "type": "mqtt out",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "topic": "in",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f15d66b3.c7edf8",
+        "x": 850,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "fd390e2f3f28a5c0",
+        "type": "image",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 460,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "c9fd1c6cb40548ce",
+        "type": "base64",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "action": "",
+        "property": "payload",
+        "x": 440,
+        "y": 340,
+        "wires": [
+            [
+                "0ae8a121c5a7b4bf",
+                "abfef1385e8ed91d"
+            ]
+        ]
+    },
+    {
+        "id": "0ae8a121c5a7b4bf",
+        "type": "ui_template",
+        "z": "20d7bb61849c8943",
+        "group": "63cfe05febb27b17",
+        "name": "from 라즈베리",
+        "order": 1,
+        "width": 6,
+        "height": 6,
+        "format": "<img alt=\"HTTP Snap\" src=\"data:image/jpg;base64,{{msg.payload}}\" />\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 680,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "46d2408a4bf776d6",
+        "type": "ui_switch",
+        "z": "20d7bb61849c8943",
+        "name": "on/off",
+        "label": "동작스위치",
+        "tooltip": "",
+        "group": "63cfe05febb27b17",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "test",
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "9238c03e1e52b45a"
+            ]
+        ]
+    },
+    {
+        "id": "32eb87e13295ec40",
+        "type": "trigger",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "op1": "{\"pic\":\"1\"}",
+        "op2": "0",
+        "op1type": "json",
+        "op2type": "str",
+        "duration": "-5",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 520,
+        "y": 200,
+        "wires": [
+            [
+                "d2049708afde5591"
+            ]
+        ]
+    },
+    {
+        "id": "9238c03e1e52b45a",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "func": "global.set(\"auto\",msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 200,
+        "wires": [
+            [
+                "32eb87e13295ec40"
+            ]
+        ]
+    },
+    {
+        "id": "d2049708afde5591",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "func": "var auto=global.get(\"auto\");\nif(auto==1)\n    return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 200,
+        "wires": [
+            [
+                "fa2a6389e9714847"
+            ]
+        ]
+    },
+    {
+        "id": "abfef1385e8ed91d",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "findOneAndUpdate",
+        "func": "var time = new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' });\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nnewMsg.payload    = [{ 'email' : 'president4k@naver.com'}, {$set:{ 'picture':msg.payload, 'time':time}} ];\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 380,
+        "wires": [
+            [
+                "871861e0067c7586"
+            ]
+        ]
+    },
+    {
+        "id": "871861e0067c7586",
+        "type": "mongodb2 in",
+        "z": "20d7bb61849c8943",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 870,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e47834eedddddf95",
+        "type": "inject",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 480,
+        "wires": [
+            [
+                "e1f3051067a31cf6"
+            ]
+        ]
+    },
+    {
+        "id": "e1f3051067a31cf6",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "findOne",
+        "func": "/*var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'email' : 'president4k@naver.com'};\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;*/\nglobal.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'email' : 'president4k@naver.com'};\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 480,
+        "wires": [
+            [
+                "2c66367e24986415"
+            ]
+        ]
+    },
+    {
+        "id": "2c66367e24986415",
+        "type": "mongodb2 in",
+        "z": "20d7bb61849c8943",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 490,
+        "y": 480,
+        "wires": [
+            [
+                "2bcb3bdbc83427b2"
+            ]
+        ]
+    },
+    {
+        "id": "2bcb3bdbc83427b2",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "func": "var newMsg={};\nnewMsg.payload=msg.payload.picture.toString();\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 610,
+        "y": 480,
+        "wires": [
+            [
+                "8f65e1121332d8ca"
+            ]
+        ]
+    },
+    {
+        "id": "8f65e1121332d8ca",
+        "type": "image",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 780,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "3ca83c333cb53913",
+        "type": "inject",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"pic\":\"1\"}",
+        "payloadType": "json",
+        "x": 210,
+        "y": 140,
+        "wires": [
+            [
+                "fa2a6389e9714847"
+            ]
+        ]
+    },
+    {
+        "id": "f15d66b3.c7edf8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "a3aq8t057uz8il-ats.iot.us-east-2.amazonaws.com",
+        "port": "8883",
+        "tls": "509a45a9.089bbc",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "63cfe05febb27b17",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "b8d4c5bc47a034a0",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false
+    },
+    {
+        "id": "ff55d734.a9cd28",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "509a45a9.089bbc",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "f63dd04081758207017b3f5a6fe5d533d524c6a90792adf2780779cb64a626d8-certificate.pem.crt",
+        "keyname": "f63dd04081758207017b3f5a6fe5d533d524c6a90792adf2780779cb64a626d8-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "b8d4c5bc47a034a0",
+        "type": "ui_tab",
+        "name": "cameras",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    }
+]
+```
