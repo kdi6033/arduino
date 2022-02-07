@@ -1,16 +1,16 @@
 [
     {
-        "id": "a5e5dabe4b98a935",
+        "id": "20d7bb61849c8943",
         "type": "tab",
-        "label": "플로우 1",
+        "label": "5초 cam",
         "disabled": false,
         "info": "",
         "env": []
     },
     {
-        "id": "703d75e48e89a8e6",
+        "id": "65edf2f1dc5a71d6",
         "type": "mqtt in",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
         "name": "",
         "topic": "out",
         "qos": "0",
@@ -20,19 +20,19 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 230,
-        "y": 260,
+        "x": 190,
+        "y": 280,
         "wires": [
             [
-                "550d0a71567a9725",
-                "d7bfa1d60288af6f"
+                "fd390e2f3f28a5c0",
+                "c9fd1c6cb40548ce"
             ]
         ]
     },
     {
-        "id": "2e2f661a9827a611",
+        "id": "fa2a6389e9714847",
         "type": "mqtt out",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
         "name": "",
         "topic": "in",
         "qos": "0",
@@ -43,14 +43,14 @@
         "correl": "",
         "expiry": "",
         "broker": "f15d66b3.c7edf8",
-        "x": 890,
-        "y": 180,
+        "x": 850,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "550d0a71567a9725",
+        "id": "fd390e2f3f28a5c0",
         "type": "image",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
         "name": "",
         "width": 160,
         "data": "payload",
@@ -59,14 +59,51 @@
         "active": true,
         "pass": false,
         "outputs": 0,
-        "x": 500,
-        "y": 260,
+        "x": 460,
+        "y": 280,
         "wires": []
     },
     {
-        "id": "0caad8e3a3a6a602",
+        "id": "c9fd1c6cb40548ce",
+        "type": "base64",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "action": "",
+        "property": "payload",
+        "x": 440,
+        "y": 340,
+        "wires": [
+            [
+                "0ae8a121c5a7b4bf",
+                "abfef1385e8ed91d"
+            ]
+        ]
+    },
+    {
+        "id": "0ae8a121c5a7b4bf",
+        "type": "ui_template",
+        "z": "20d7bb61849c8943",
+        "group": "63cfe05febb27b17",
+        "name": "from 라즈베리",
+        "order": 1,
+        "width": 6,
+        "height": 6,
+        "format": "<img alt=\"HTTP Snap\" src=\"data:image/jpg;base64,{{msg.payload}}\" />\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 680,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "46d2408a4bf776d6",
         "type": "ui_switch",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
         "name": "on/off",
         "label": "동작스위치",
         "tooltip": "",
@@ -89,24 +126,24 @@
         "offcolor": "",
         "animate": false,
         "className": "test",
-        "x": 230,
-        "y": 180,
+        "x": 190,
+        "y": 200,
         "wires": [
             [
-                "7ede45e207915379"
+                "9238c03e1e52b45a"
             ]
         ]
     },
     {
-        "id": "0c1a588b4e0b6a58",
+        "id": "32eb87e13295ec40",
         "type": "trigger",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
         "name": "",
         "op1": "{\"pic\":\"1\"}",
         "op2": "0",
         "op1type": "json",
         "op2type": "str",
-        "duration": "-3",
+        "duration": "-5",
         "extend": false,
         "overrideDelay": false,
         "units": "s",
@@ -114,18 +151,18 @@
         "bytopic": "all",
         "topic": "topic",
         "outputs": 1,
-        "x": 560,
-        "y": 180,
+        "x": 520,
+        "y": 200,
         "wires": [
             [
-                "777a9717579907c7"
+                "d2049708afde5591"
             ]
         ]
     },
     {
-        "id": "7ede45e207915379",
+        "id": "9238c03e1e52b45a",
         "type": "function",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
         "name": "",
         "func": "global.set(\"auto\",msg.payload);\nreturn msg;",
         "outputs": 1,
@@ -133,18 +170,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 380,
-        "y": 180,
+        "x": 340,
+        "y": 200,
         "wires": [
             [
-                "0c1a588b4e0b6a58"
+                "32eb87e13295ec40"
             ]
         ]
     },
     {
-        "id": "777a9717579907c7",
+        "id": "d2049708afde5591",
         "type": "function",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
         "name": "",
         "func": "var auto=global.get(\"auto\");\nif(auto==1)\n    return msg;",
         "outputs": 1,
@@ -152,18 +189,142 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 740,
-        "y": 180,
+        "x": 700,
+        "y": 200,
         "wires": [
             [
-                "2e2f661a9827a611"
+                "fa2a6389e9714847"
             ]
         ]
     },
     {
-        "id": "76bb69a052932fcf",
+        "id": "abfef1385e8ed91d",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "findOneAndUpdate",
+        "func": "var time = new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' });\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nnewMsg.payload    = [{ 'email' : 'president4k@naver.com'}, {$set:{ 'picture':msg.payload, 'time':time}} ];\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 380,
+        "wires": [
+            [
+                "871861e0067c7586"
+            ]
+        ]
+    },
+    {
+        "id": "871861e0067c7586",
+        "type": "mongodb2 in",
+        "z": "20d7bb61849c8943",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 870,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e47834eedddddf95",
         "type": "inject",
-        "z": "a5e5dabe4b98a935",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 480,
+        "wires": [
+            [
+                "e1f3051067a31cf6"
+            ]
+        ]
+    },
+    {
+        "id": "e1f3051067a31cf6",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "findOne",
+        "func": "/*var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'email' : 'president4k@naver.com'};\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;*/\nglobal.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'email' : 'president4k@naver.com'};\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 480,
+        "wires": [
+            [
+                "2c66367e24986415"
+            ]
+        ]
+    },
+    {
+        "id": "2c66367e24986415",
+        "type": "mongodb2 in",
+        "z": "20d7bb61849c8943",
+        "service": "_ext_",
+        "configNode": "ff55d734.a9cd28",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 490,
+        "y": 480,
+        "wires": [
+            [
+                "2bcb3bdbc83427b2"
+            ]
+        ]
+    },
+    {
+        "id": "2bcb3bdbc83427b2",
+        "type": "function",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "func": "var newMsg={};\nnewMsg.payload=msg.payload.picture.toString();\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 610,
+        "y": 480,
+        "wires": [
+            [
+                "8f65e1121332d8ca"
+            ]
+        ]
+    },
+    {
+        "id": "8f65e1121332d8ca",
+        "type": "image",
+        "z": "20d7bb61849c8943",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "thumbnail": false,
+        "active": true,
+        "pass": false,
+        "outputs": 0,
+        "x": 780,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "3ca83c333cb53913",
+        "type": "inject",
+        "z": "20d7bb61849c8943",
         "name": "",
         "props": [
             {
@@ -181,48 +342,12 @@
         "topic": "",
         "payload": "{\"pic\":\"1\"}",
         "payloadType": "json",
-        "x": 250,
-        "y": 120,
+        "x": 210,
+        "y": 140,
         "wires": [
             [
-                "2e2f661a9827a611"
+                "fa2a6389e9714847"
             ]
-        ]
-    },
-    {
-        "id": "d7bfa1d60288af6f",
-        "type": "base64",
-        "z": "a5e5dabe4b98a935",
-        "name": "",
-        "action": "",
-        "property": "payload",
-        "x": 480,
-        "y": 320,
-        "wires": [
-            [
-                "207f64206b93b359"
-            ]
-        ]
-    },
-    {
-        "id": "207f64206b93b359",
-        "type": "ui_template",
-        "z": "a5e5dabe4b98a935",
-        "group": "63cfe05febb27b17",
-        "name": "from 라즈베리",
-        "order": 1,
-        "width": 6,
-        "height": 6,
-        "format": "<img alt=\"HTTP Snap\" src=\"data:image/jpg;base64,{{msg.payload}}\" />\n",
-        "storeOutMessages": true,
-        "fwdInMessages": true,
-        "resendOnRefresh": false,
-        "templateScope": "local",
-        "className": "",
-        "x": 720,
-        "y": 320,
-        "wires": [
-            []
         ]
     },
     {
@@ -261,6 +386,14 @@
         "disp": true,
         "width": 6,
         "collapse": false
+    },
+    {
+        "id": "ff55d734.a9cd28",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
     },
     {
         "id": "509a45a9.089bbc",
