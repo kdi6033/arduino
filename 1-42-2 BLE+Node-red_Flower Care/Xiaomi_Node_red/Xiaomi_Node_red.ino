@@ -120,7 +120,7 @@ bool readFloraDataCharacteristic(BLERemoteService* floraService, String baseTopi
   }
   Serial.println(" ");
 
-  snprintf (msg, 100, "{\"name\":\"Temperature\",\"value\":%.1f}", (val[0]+val[1]) / ((float)10.0));
+  snprintf (msg, 100, "{\"name\":\"Temperature\",\"value\":%d}", (val[0] + val[1]*256)/10);
   Serial.println(msg);
 
   snprintf (msg2, 100, "{\"name\":\"Moisture\",\"value\":%d}",val[7]);
