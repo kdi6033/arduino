@@ -2,7 +2,7 @@
 
 char* FLORA_DEVICES[] = { "C4:7C:8D:6D:E8:02", };//첫번째
 //char* FLORA_DEVICES[] = { "C4:7C:8D:63:92:E5", };
-#define SLEEP_DURATION 10
+#define SLEEP_DURATION 5
 #define BATTERY_INTERVAL 3
 #define RETRY 3
 #include "BLEDevice.h"
@@ -233,6 +233,9 @@ bool processFloraDevice(BLEAddress floraAddress, char* deviceMacAddress, bool ge
 
 void readXaiomi() {
    readCount++;
+  //Serial.println("Initialize BLE client...");
+  BLEDevice::init("");
+  BLEDevice::setPower(ESP_PWR_LVL_P7);   
   // check if battery status should be read - based on boot count
   //bool readBattery = ((readCount % BATTERY_INTERVAL) == 0);
   bool readBattery = ((readCount % BATTERY_INTERVAL) == 0);
@@ -261,10 +264,6 @@ void setup() {
   // all action is done when device is woken up
   Serial.begin(115200);
   delay(1000);
-
-  Serial.println("Initialize BLE client...");
-  BLEDevice::init("");
-  BLEDevice::setPower(ESP_PWR_LVL_P7);
 }
 
 void loop() {
