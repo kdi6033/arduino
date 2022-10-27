@@ -1,0 +1,447 @@
+[
+    {
+        "id": "cac9b72105dbef93",
+        "type": "subflow",
+        "name": "Iterate",
+        "in": [
+            {
+                "x": 220,
+                "y": 219,
+                "wires": [
+                    {
+                        "id": "666987f9c003060e"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 454,
+                "y": 174,
+                "wires": [
+                    {
+                        "id": "666987f9c003060e",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 455,
+                "y": 259,
+                "wires": [
+                    {
+                        "id": "666987f9c003060e",
+                        "port": 1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "666987f9c003060e",
+        "type": "function",
+        "z": "cac9b72105dbef93",
+        "name": "Iterate",
+        "func": "//Node has 2 outputs - 1 for itteration and 1 for completion\nvar nextObj, out;\nvar itt = msg.iterationInfo;\n\n\n//If the iterating has not yet begun set up the iteration metadata in the msg\nif (typeof itt === 'undefined') {\n    //Make sure payload is an array\n    if( Object.prototype.toString.call(msg.payload) !== '[object Array]' ) {\n       msg.payload = [msg.payload];\n    }\n\n    msg.iterationInfo = itt = {};\n    itt.index = -1;\n    itt.inArray = msg.payload;\n    itt.outArray = [];\n\n//Otherwise just push the input to the output array\n} else {\n    itt.outArray.push(msg.payload)\n}\n\n//Goto next object\nitt.index ++;\n\n//If there are stil objects left to iterate goto the next one in the original array\nif (itt.index < itt.inArray.length) {\n    nextObj = msg;\n    msg.payload = itt.inArray[itt.index];\n\n//otherwise pass the out array as the payload\n} else {\n    out = msg;\n    msg.payload = itt.outArray;\n    delete msg.iterationInfo;\n}\n\nreturn [nextObj, out];",
+        "outputs": "2",
+        "noerr": 0,
+        "x": 347,
+        "y": 220,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "fc6c98ea102181da",
+        "type": "subflow:cac9b72105dbef93",
+        "z": "d53c82f6a42ad3a0",
+        "name": "Iterate",
+        "env": [],
+        "x": 430,
+        "y": 100,
+        "wires": [
+            [
+                "eb7261516ec7b1af",
+                "62912d2ccef73d41"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "62912d2ccef73d41",
+        "type": "function",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 428,
+        "y": 40,
+        "wires": [
+            [
+                "fc6c98ea102181da"
+            ]
+        ]
+    },
+    {
+        "id": "b79cce04e1b54d3d",
+        "type": "udp out",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "addr": "",
+        "iface": "",
+        "port": "",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 894,
+        "y": 96,
+        "wires": []
+    },
+    {
+        "id": "eb7261516ec7b1af",
+        "type": "function",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "func": "var server=msg.server;\nvar newMsg={};\nnewMsg.payload=\"{\\\"mqttIp\\\":\\\"\"+server+\"\\\"}\";\nnewMsg.ip=msg.payload;\nnewMsg.port=4210;\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 601,
+        "y": 98,
+        "wires": [
+            [
+                "1c9025bef5d0b4e9"
+            ]
+        ]
+    },
+    {
+        "id": "1c9025bef5d0b4e9",
+        "type": "change",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ip",
+                "pt": "msg",
+                "to": "ip",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 755,
+        "y": 97,
+        "wires": [
+            [
+                "b79cce04e1b54d3d"
+            ]
+        ]
+    },
+    {
+        "id": "d69bd4064f696745",
+        "type": "function",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "func": "var server = msg.payload[3].address;\nvar ipList=[];\n//var server=global.get(\"serverIp\");\nvar a=server.split('.');\nvar ip=a[0]+'.'+a[1]+'.'+a[2]+'.';\n\nmsg.server=server;\nfor(var i=2;i<255;i++)\n    ipList.push(ip+i);\nmsg.payload=ipList;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 100,
+        "wires": [
+            [
+                "fc6c98ea102181da"
+            ]
+        ]
+    },
+    {
+        "id": "77ea62f82598e541",
+        "type": "inject",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 40,
+        "wires": [
+            [
+                "c6cae6a324c99005"
+            ]
+        ]
+    },
+    {
+        "id": "c6cae6a324c99005",
+        "type": "hostip",
+        "z": "d53c82f6a42ad3a0",
+        "name": "Host IP",
+        "x": 120,
+        "y": 100,
+        "wires": [
+            [
+                "d69bd4064f696745"
+            ]
+        ]
+    },
+    {
+        "id": "26b39578d994ad17",
+        "type": "mqtt out",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "topic": "/i2r/inTopic",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d429922226c17136",
+        "x": 570,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "c84ad9610fed361f",
+        "type": "ui_button",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "group": "13e66dd94e22228f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "기기연결",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 260,
+        "y": 40,
+        "wires": [
+            [
+                "c6cae6a324c99005"
+            ]
+        ]
+    },
+    {
+        "id": "116e3fb82ff7b527",
+        "type": "ui_slider",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "label": "속도",
+        "tooltip": "",
+        "group": "13e66dd94e22228f",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "200",
+        "max": "1024",
+        "step": 1,
+        "className": "",
+        "x": 90,
+        "y": 200,
+        "wires": [
+            [
+                "9c47aad178a6f8bb"
+            ]
+        ]
+    },
+    {
+        "id": "8de8178c065ef909",
+        "type": "ui_dropdown",
+        "z": "d53c82f6a42ad3a0",
+        "name": "",
+        "label": "방향",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "13e66dd94e22228f",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "정지",
+                "value": "0",
+                "type": "str"
+            },
+            {
+                "label": "우회전",
+                "value": "1",
+                "type": "str"
+            },
+            {
+                "label": "좌회전",
+                "value": "2",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 90,
+        "y": 160,
+        "wires": [
+            [
+                "e5dc7971aaae6155"
+            ]
+        ]
+    },
+    {
+        "id": "e5dc7971aaae6155",
+        "type": "function",
+        "z": "d53c82f6a42ad3a0",
+        "name": "global set",
+        "func": "global.set(\"dir\",msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 220,
+        "y": 160,
+        "wires": [
+            [
+                "69bd96a0cd02a26b"
+            ]
+        ]
+    },
+    {
+        "id": "9c47aad178a6f8bb",
+        "type": "function",
+        "z": "d53c82f6a42ad3a0",
+        "name": "global set",
+        "func": "global.set(\"vel\",msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 220,
+        "y": 200,
+        "wires": [
+            [
+                "69bd96a0cd02a26b"
+            ]
+        ]
+    },
+    {
+        "id": "69bd96a0cd02a26b",
+        "type": "function",
+        "z": "d53c82f6a42ad3a0",
+        "name": "function 1",
+        "func": "var dir = global.get(\"dir\")||0;\nvar vel = global.get(\"vel\")||0;\nmsg.payload = {\n    \"dir\":dir,\n    \"vel\":vel\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 180,
+        "wires": [
+            [
+                "26b39578d994ad17"
+            ]
+        ]
+    },
+    {
+        "id": "d429922226c17136",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "tls": "509a45a9.089bbc",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "13e66dd94e22228f",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "3327ed4948879297",
+        "order": 1,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "509a45a9.089bbc",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "74eb3c21934f2c65b547face5186127768f08473410840b612e629334d560cd8-certificate.pem.crt",
+        "keyname": "74eb3c21934f2c65b547face5186127768f08473410840b612e629334d560cd8-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "3327ed4948879297",
+        "type": "ui_tab",
+        "name": "cameras",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
