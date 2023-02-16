@@ -3,8 +3,8 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
 
-const char* ssid = "mecha1203";
-const char* password = "mecha1203";
+const char* ssid = "사용하시는 와이파이 이름";     // 사용하실 와이파이 정보를 꼭 수정해서 입력해주세요! 자동연결 됩니다.
+const char* password = "와이파이 비밀번호";
 unsigned long previousMillis = 0;     
 const long interval = 2000; 
 int counting;
