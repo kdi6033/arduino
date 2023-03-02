@@ -18,8 +18,8 @@
 #define RELAY3_PIN 27
 #define RELAY4_PIN 26
 
-const char* ssid = "mecha1203";
-const char* password = "mecha1203";
+const char* ssid = "사용할 와이파이 이름";
+const char* password = "와이파이 비밀번호";
 
 WiFiServer server(80);
 
