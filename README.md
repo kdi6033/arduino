@@ -594,38 +594,42 @@ INT         -> GPIO 33
 #define TFT_MISO 19
 #define TFT_MOSI 23
 #define TFT_SCLK 18
-#define TFT_CS   15   // Chip Select
-#define TFT_DC    2   // Data/Command
-#define TFT_RST   4   // Reset 핀 (연결하지 않은 경우 -1 설정)
+#define TFT_CS   15     // Chip Select
+#define TFT_DC    2     // Data/Command
+#define TFT_RST   4     // LCD Reset 핀
 
 // 백라이트 핀 설정 (필요시 제어)
 #define TFT_BL    32
 #define TFT_BACKLIGHT_ON HIGH
 
-// 3. 터치스크린 칩 사용 시 (FT6336U는 I2C → TFT_eSPI는 지원하지 않음)
-// 터치 제어는 별도로 lvgl 드라이버에서 설정 (여기선 제외)
+// 3. 정전식 터치 FT6336U 핀 설정 (I2C 기반)
+#define TOUCH_SDA 21     // I2C SDA
+#define TOUCH_SCL 22     // I2C SCL
+#define TOUCH_RST 27     // 터치 리셋 핀
+#define TOUCH_INT 33     // 인터럽트 핀 (선택사항, 사용 시 INT 핸들링 가능)
 
-// 4. 디스플레이 해상도 설정 (ST7796은 480x320)
+// 4. 디스플레이 해상도 설정
 #define TFT_WIDTH  480
 #define TFT_HEIGHT 320
 
 // 5. 폰트 설정
-#define LOAD_GLCD        // 기본 8비트 폰트
-#define LOAD_FONT2       // 소형 폰트
-#define LOAD_FONT4       // 중형 폰트
-#define LOAD_FONT6       // 대형 숫자 폰트
-#define LOAD_FONT7       // 세그먼트 숫자 폰트
-#define LOAD_FONT8       // 초대형 숫자 폰트
-#define LOAD_GFXFF       // FreeFonts 사용 (Adafruit GFX FF1~FF48)
-#define SMOOTH_FONT      // 부드러운 벡터 폰트 사용 가능
+#define LOAD_GLCD
+#define LOAD_FONT2
+#define LOAD_FONT4
+#define LOAD_FONT6
+#define LOAD_FONT7
+#define LOAD_FONT8
+#define LOAD_GFXFF
+#define SMOOTH_FONT
 
 // 6. SPI 통신 속도 설정
-#define SPI_FREQUENCY       40000000   // ST7796은 40MHz까지 안정적으로 작동
-#define SPI_READ_FREQUENCY  20000000   // 읽기 속도 (필요한 경우)
-#define SPI_TOUCH_FREQUENCY 2500000    // 터치용 SPI (FT6336U는 I2C이므로 무시 가능)
+#define SPI_FREQUENCY       40000000
+#define SPI_READ_FREQUENCY  20000000
+#define SPI_TOUCH_FREQUENCY 2500000   // 사용 안 해도 무방함 (FT6336U는 I2C)
 
 // 7. 기타 설정
-//#define USE_HSPI_PORT      // SPI 포트 변경 (필요시 사용)
-//#define SUPPORT_TRANSACTIONS // ESP32에서는 기본 지원됨
+//#define USE_HSPI_PORT
+//#define SUPPORT_TRANSACTIONS
+
 
 ```
