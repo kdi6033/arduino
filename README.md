@@ -69,7 +69,6 @@
 ---
 
 ## 📄 Arduino IDE용 코드 (`Hello_LVGL.ino`)
-
 ```
 #include <lvgl.h>
 #include <TFT_eSPI.h>
@@ -115,4 +114,4 @@ void loop() {
   lv_timer_handler();
   delay(5);
 }
-'''
+```
