@@ -1,42 +1,68 @@
 
-# ESP32-S3 + ILI9341 + LVGL Hello World (Arduino IDE)
+# ESP32 WROOM + ILI9341 + LVGL + 터치스크린 + SD 카드 연결 예제
 
 이 프로젝트는 **ESP32-S3 보드와 ILI9341 2.4"/2.8"/3.2" SPI 디스플레이**를 연결하여  
 **LVGL로 "Hello, World!" 텍스트를 화면 중앙에 출력**하는 예제입니다.
 
 유튜브 참고 영상: [https://www.youtube.com/watch?v=NvBblQnWhsQ](https://www.youtube.com/watch?v=NvBblQnWhsQ)
 
+## 📌 사용 부품
+
+- ESP32-S3 DevKit 보드 (USB-C 포트 있는 보드)
+- ILI9341 SPI 디스플레이 (2.4인치 또는 2.8인치, 320x240 해상도)
+- 점퍼 케이블
+
 ---
 
-## ✅ 하드웨어 연결 (핀맵)
+### 📺 TFT 디스플레이 연결 (ILI9341)
 
-| ILI9341 핀 | ESP32-S3 핀 | 설명       |
-|------------|-------------|------------|
-| VCC        | 3.3V        | 전원       |
-| GND        | GND         | 그라운드   |
-| CS         | GPIO10      | Chip Select |
-| RESET      | GPIO5       | Reset 핀    |
-| DC/RS      | GPIO9       | Data/Command |
-| SDI(MOSI)  | GPIO11      | SPI MOSI    |
-| SCK        | GPIO12      | SPI Clock   |
-| LED        | 3.3V        | 백라이트    |
+| 디스플레이 핀 | ESP32 핀 | 설명 |
+|---------------|----------|------|
+| TFT_VCC       | VIN 또는 3V3 | 전원 공급 |
+| TFT_GND       | GND      | 그라운드 |
+| TFT_CS        | GPIO15   | 칩 선택 (Chip Select) |
+| TFT_RST       | GPIO4    | 디스플레이 리셋 핀 |
+| TFT_DC        | GPIO2    | 데이터/명령 전환 핀 |
+| TFT_MOSI      | GPIO23   | SPI 데이터 전송 |
+| TFT_SCK       | GPIO18   | SPI 클럭 |
+| TFT_LED       | 3.3V     | 백라이트 전원 |
+| TFT_MISO      | GPIO19   | SPI 데이터 수신 (필요 시) |
 
-※ T_IRQ, T_DO 등 터치 관련 핀은 추후 추가
+---
 
-'''
+### 🖐️ 터치스크린 연결 (XPT2046 정압식)
 
-## 🔧 아두이노 IDE 설정
+> 디스플레이와 SPI 핀 공유됨
 
-1. **보드 매니저 설정**
-   - 보드: ESP32-S3 Dev Module
-   - Upload Speed: 921600 또는 115200
-   - Flash Size: 8MB
-   - USB CDC On Boot: Enabled
-   - PSRAM: Enabled
+| 터치 핀 | ESP32 핀 | 설명 |
+|---------|----------|------|
+| T_CLK   | GPIO18   | SPI 클럭 (공유) |
+| T_CS    | GPIO21   | 터치 칩 선택 |
+| T_DIN   | GPIO23   | SPI 데이터 입력 (공유) |
+| T_DO    | GPIO19   | SPI 데이터 출력 (공유) |
+| T_IRQ   | GPIO22 (선택) | 터치 인터럽트 (필수 아님) |
 
-2. **필요 라이브러리 설치**
-   - **lvgl** by LVGL (v8.x 이상)
-   - **TFT_eSPI** by Bodmer
+---
+
+### 💾 SD 카드 모듈 연결 (SPI 방식)
+
+> TFT와 같은 SPI 핀 사용. CS만 별도로 설정
+
+| SD 핀   | ESP32 핀 | 설명 |
+|---------|----------|------|
+| SD_SCK  | GPIO18   | SPI 클럭 (공유) |
+| SD_MISO | GPIO19   | SPI 수신 (공유) |
+| SD_MOSI | GPIO23   | SPI 송신 (공유) |
+| SD_CS   | GPIO5    | SD 카드 선택 핀 (독립적 사용) |
+
+---
+
+## 📦 사용 라이브러리 (아두이노 IDE에서 설치)
+
+- [`lvgl`](https://github.com/lvgl/lvgl)
+- [`TFT_eSPI`](https://github.com/Bodmer/TFT_eSPI)
+- [`XPT2046_Touchscreen`](https://github.com/PaulStoffregen/XPT2046_Touchscreen) 또는 다른 SPI 터치 드라이버
+- [`SD`](https://github.com/espressif/arduino-esp32/tree/master/libraries/SD)
 
 ---
 
