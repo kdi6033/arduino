@@ -101,38 +101,110 @@ Arduino IDE에서 아래 라이브러리를 설치합니다:
 
 ---
 
-## 🔌 ILI9341 2.4인치 디스플레이 핀 설정 예시
-
-```cpp
-#define ILI9341_DRIVER
-#define TFT_CS   15
-#define TFT_DC   2
-#define TFT_RST  4
-#define TFT_MOSI 23
-#define TFT_SCLK 18
-#define TFT_MISO -1
-#define TFT_BL   21
-```
-
-> `TFT_eSPI/User_Setup.h`에 설정 (보드 환경에 맞게 수정 필요)
-
 ---
 
 ## ⚙️ lv_conf.h 주요 설정 (요약)
 
 ```c
+/* lv_conf.h - Configuration file for LVGL v9.2.2 (for ESP32-S3 + ILI9341) */
+
+#ifndef LV_CONF_H
+#define LV_CONF_H
+
+/*====================
+   COLOR SETTINGS
+ *====================*/
 #define LV_COLOR_DEPTH 16
 #define LV_HOR_RES_MAX 320
 #define LV_VER_RES_MAX 240
+
+/*====================
+   MEMORY SETTINGS
+ *====================*/
+#define LV_USE_STDLIB_MALLOC LV_STDLIB_BUILTIN
+#define LV_USE_STDLIB_STRING LV_STDLIB_BUILTIN
 #define LV_MEM_SIZE (64 * 1024U)
-#define LV_USE_LOG 0
+#define LV_MEM_POOL_EXPAND_SIZE 0
+#define LV_MEM_ADR 0
+
+/*====================
+   HAL SETTINGS
+ *====================*/
+#define LV_DEF_REFR_PERIOD 33
+#define LV_DPI_DEF 130
+
+/*====================
+   OS SETTINGS
+ *====================*/
+#define LV_USE_OS LV_OS_NONE
+
+/*====================
+   DRAW SETTINGS
+ *====================*/
+#define LV_DRAW_BUF_STRIDE_ALIGN 1
+#define LV_DRAW_BUF_ALIGN 4
+#define LV_USE_DRAW_SW 1
+#define LV_DRAW_SW_COMPLEX 1
+#define LV_DRAW_LAYER_SIMPLE_BUF_SIZE (24 * 1024)
+#define LV_DRAW_THREAD_STACK_SIZE (8 * 1024)
+
+/*====================
+   FONT SETTINGS
+ *====================*/
+#define LV_FONT_MONTSERRAT_14 1
 #define LV_FONT_DEFAULT &lv_font_montserrat_14
+#define LV_USE_FONT_PLACEHOLDER 1
+
+/*====================
+   TEXT SETTINGS
+ *====================*/
 #define LV_TXT_ENC LV_TXT_ENC_UTF8
+#define LV_TXT_BREAK_CHARS " ,.;:-_)]}"
+
+/*====================
+   WIDGET SETTINGS
+ *====================*/
+#define LV_WIDGETS_HAS_DEFAULT_VALUE 1
 #define LV_USE_LABEL 1
-#define LV_USE_BTN 1
+#define LV_USE_BUTTON 1
 #define LV_USE_SLIDER 1
 #define LV_USE_SWITCH 1
+#define LV_USE_LED 1
+#define LV_USE_LIST 1
+#define LV_USE_DROPDOWN 1
+#define LV_USE_CANVAS 1
+#define LV_USE_IMAGE 1
+#define LV_USE_TEXTAREA 1
+#define LV_USE_CHART 1
+
+/*====================
+   THEMES
+ *====================*/
 #define LV_USE_THEME_DEFAULT 1
+#define LV_THEME_DEFAULT_DARK 0
+#define LV_THEME_DEFAULT_GROW 1
+#define LV_THEME_DEFAULT_TRANSITION_TIME 80
+
+/*====================
+   LAYOUTS
+ *====================*/
+#define LV_USE_FLEX 1
+#define LV_USE_GRID 1
+
+/*====================
+   DISPLAY DRIVER
+ *====================*/
+#define LV_USE_ILI9341 1
+#define LV_USE_TOUCHPAD 0
+
+/*====================
+   EXAMPLES & DEMOS
+ *====================*/
+#define LV_BUILD_EXAMPLES 1
+#define LV_USE_DEMO_WIDGETS 0
+
+#endif /* LV_CONF_H */
+
 ```
 
 전체 `lv_conf.h`는 [여기에서 참조](https://github.com/lvgl/lvgl/blob/master/lv_conf_template.h)하거나 직접 작성 가능
