@@ -447,7 +447,7 @@ void loop() {
 ---
 
 ## ⚙️ ESP32 WROOM 핀 배치 예시
-
+```
 LCD         -> ESP32
 -------------------------
 VCC         -> 3.3V
@@ -465,6 +465,7 @@ SCL         -> GPIO 22
 SDA         -> GPIO 21
 RST         -> GPIO 27
 INT         -> GPIO 33
+```
 
 
 
