@@ -391,6 +391,9 @@ void loop() {
 
 > 참고 사이트: [LCDWiki 3.5inch IPS SPI Module ST7796](http://www.lcdwiki.com/3.5inch_IPS_SPI_Module_ST7796)
 
+![image](https://github.com/user-attachments/assets/aa56a517-de29-43a5-b9be-5fee32ecbb5f)
+
+
 ---
 
 ## 📦 제품 사양 (Product Parameters)
