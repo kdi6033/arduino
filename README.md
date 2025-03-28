@@ -420,9 +420,9 @@ void loop() {
 |-------------|------------------------------|----------------|
 | VCC         | 전원 입력 (3.3V or 5V)       | 3.3V           |
 | GND         | 그라운드                     | GND            |
-| CS          | SPI 칩 선택                  | GPIO 5         |
-| RESET       | LCD 리셋                     | GPIO 18        |
-| DC/RS       | 데이터/명령 선택             | GPIO 19        |
+| CS          | SPI 칩 선택                  | GPIO 15         |
+| RESET       | LCD 리셋                     | GPIO 4        |
+| DC/RS       | 데이터/명령 선택             | GPIO 2        |
 | SDI/MOSI    | SPI 데이터 입력              | GPIO 23        |
 | SCK         | SPI 클럭                     | GPIO 18        |
 | LED         | 백라이트 (고정 HIGH)         | 3.3V (또는 GPIO로 제어 가능) |
@@ -452,9 +452,9 @@ LCD         -> ESP32
 -------------------------
 VCC         -> 3.3V
 GND         -> GND
-CS          -> GPIO 5
-RESET       -> GPIO 18
-DC/RS       -> GPIO 19
+CS          -> GPIO 15
+RESET       -> GPIO 4
+DC/RS       -> GPIO 2
 SDI/MOSI    -> GPIO 23
 SCK         -> GPIO 18
 LED         -> 3.3V
