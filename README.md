@@ -376,4 +376,63 @@ void loop() {
 
 ---
 
+# 3.5인치 SPI IPS TFT LCD (ST7796 드라이버) + ESP32-WROOM 연결 교재
+
+이 문서는 3.5인치 ST7796 SPI TFT 디스플레이를 ESP32-WROOM과 연결하여 사용하는 방법을 안내하는 교재용 README 파일입니다.
+
+> 참고 사이트: [LCDWiki 3.5inch IPS SPI Module ST7796](http://www.lcdwiki.com/3.5inch_IPS_SPI_Module_ST7796)
+
+---
+
+## 📦 제품 사양 (Product Parameters)
+
+| 항목                | 값                                      |
+|---------------------|------------------------------------------|
+| 디스플레이 크기     | 3.5 인치                                 |
+| 해상도              | 480 x 320                                |
+| 디스플레이 종류     | IPS, Full Color                          |
+| 드라이버 칩         | ST7796                                   |
+| 인터페이스 유형     | SPI                                      |
+| 전원 전압           | 3.3V ~ 5V                                |
+| 동작 전류           | 약 40~60mA                               |
+| 터치 패널           | X                                         |
+| 백라이트            | LED (제어 가능)                          |
+| 화면 방향           | 가로 / 세로 지원                         |
+| 크기                | 85mm x 55mm                              |
+| 무게                | 약 50g                                   |
+
+---
+
+## 🔌 핀 기능 설명 (Interface Function Description)
+
+| LCD 핀 이름 | 설명                         | ESP32 핀 예시  |
+|-------------|------------------------------|----------------|
+| VCC         | 전원 입력 (3.3V or 5V)       | 3.3V           |
+| GND         | 그라운드                     | GND            |
+| CS          | SPI 칩 선택                  | GPIO 5         |
+| RESET       | LCD 리셋                     | GPIO 18        |
+| DC/RS       | 데이터/명령 선택             | GPIO 19        |
+| SDI/MOSI    | SPI 데이터 입력              | GPIO 23        |
+| SCK         | SPI 클럭                     | GPIO 18        |
+| LED         | 백라이트 (고정 HIGH)         | 3.3V (또는 GPIO로 제어 가능) |
+
+> ❗ **주의:** ESP32의 핀 번호는 다른 보드에 따라 다를 수 있으니, 핀 매핑은 필요에 따라 수정하세요.
+
+---
+
+## ⚙️ ESP32 WROOM 핀 배치 예시
+
+```plaintext
+LCD         -> ESP32
+-------------------------
+VCC         -> 3.3V
+GND         -> GND
+CS          -> GPIO 5
+RESET       -> GPIO 18
+DC/RS       -> GPIO 19
+SDI/MOSI    -> GPIO 23
+SCK         -> GPIO 18
+LED         -> 3.3V (또는 GPIO 4 HIGH)
+
+
 
