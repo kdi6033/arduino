@@ -47,7 +47,7 @@
 `#include <User_Setups/SetupXXX.h>` 형식으로 커스텀 설정을 연결하세요.
 
 예시 (User_Setup.h):
-```cpp
+```
 #define ILI9341_DRIVER
 
 #define TFT_CS   10  // Chip select
@@ -63,10 +63,8 @@
 #define SMOOTH_FONT
 
 #define SPI_FREQUENCY  27000000
+```
 
-
-
----
 
 ## 📄 Arduino IDE용 코드 (`Hello_LVGL.ino`)
 ```
