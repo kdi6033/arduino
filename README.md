@@ -448,7 +448,6 @@ void loop() {
 
 ## ⚙️ ESP32 WROOM 핀 배치 예시
 
-```plaintext
 LCD         -> ESP32
 -------------------------
 VCC         -> 3.3V
@@ -458,7 +457,14 @@ RESET       -> GPIO 18
 DC/RS       -> GPIO 19
 SDI/MOSI    -> GPIO 23
 SCK         -> GPIO 18
-LED         -> 3.3V (또는 GPIO 4 HIGH)
+LED         -> 3.3V
+
+Touch       -> ESP32
+-------------------------
+SCL         -> GPIO 22
+SDA         -> GPIO 21
+RST         -> GPIO 27
+INT         -> GPIO 33
 
 
 
