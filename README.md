@@ -139,79 +139,6 @@ Arduino IDE에서 아래 라이브러리를 설치합니다:
 
 ---
 
-## ✅ LVGL Hello World 예제 (v9.2.2용)
-
-```cpp
-#include <lvgl.h>
-#include <TFT_eSPI.h>
-
-TFT_eSPI tft = TFT_eSPI();
-
-static lv_color_t buf1[320 * 10];
-static lv_draw_buf_t draw_buf1;
-
-void my_disp_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map) {
-  uint32_t w = area->x2 - area->x1 + 1;
-  uint32_t h = area->y2 - area->y1 + 1;
-
-  tft.startWrite();
-  tft.setAddrWindow(area->x1, area->y1, w, h);
-  tft.pushColors((uint16_t *)px_map, w * h, true);
-  tft.endWrite();
-
-  lv_display_flush_ready(disp);
-}
-
-void setup() {
-  Serial.begin(115200);
-  lv_init();
-  tft.begin();
-  tft.setRotation(1);
-
-  lv_draw_buf_init(&draw_buf1, 320, 10, LV_COLOR_FORMAT_RGB565, 320, buf1, sizeof(buf1));
-
-  lv_display_t *disp = lv_display_create(320, 240);
-  lv_display_set_flush_cb(disp, my_disp_flush);
-  lv_display_set_draw_buffers(disp, &draw_buf1, NULL);
-
-  lv_obj_t *label = lv_label_create(lv_screen_active());
-  lv_label_set_text(label, "Hello, World!");
-  lv_obj_center(label);
-}
-
-void loop() {
-  lv_timer_handler();
-  delay(5);
-}
-```
-
----
-
-## 🧠 주의 사항 요약
-
-| 항목 | 설명 |
-|------|------|
-| LVGL 버전 | v9.2.2 이상 필요 |
-| 함수 이름 변경 | `lv_disp_drv_t` → `lv_display_t`, `lv_scr_act()` → `lv_screen_active()` 등 |
-| draw_buf 설정 | `lv_draw_buf_init()` 함수에 7개 인자 필요 |
-| flush_cb | `uint8_t *px_map` 사용 (v9 기준) |
-
----
-
-## 🎓 활용 예시
-
-- IoT PLC UI 구성
-- 버튼, 그래프, 입력창 학습
-- 실제 HMI 장비 시뮬레이션 제작
-
----
-
-본 README는 김동일 교수님의 IoT 교육 과정에서 사용되며, GitHub에 올려 누구나 참고할 수 있도록 구성되어 있습니다.
-
-추가 예제나 버튼, 차트, 슬라이더 등 실습도 가능합니다. 🎉
-
-
-
 ## 📁 TFT_eSPI 설정 방법
 
 `TFT_eSPI/User_Setup.h` 파일을 수정하거나  
@@ -238,50 +165,77 @@ void loop() {
 ```
 
 
-## 📄 Arduino IDE용 코드 (`Hello_LVGL.ino`)
+## ✅ LVGL Hello World 예제 (v9.2.2용)
+
 ```
 #include <lvgl.h>
 #include <TFT_eSPI.h>
 
-TFT_eSPI tft = TFT_eSPI(); 
-static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf[320 * 10]; 
-static lv_disp_drv_t disp_drv;
+TFT_eSPI tft = TFT_eSPI();
 
-void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
-  uint32_t w = (area->x2 - area->x1 + 1);
-  uint32_t h = (area->y2 - area->y1 + 1);
+// 하나의 버퍼와 draw_buf 사용
+static lv_color_t buf1[320 * 10];
+static lv_draw_buf_t draw_buf1;
+
+void my_disp_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map) {
+  uint32_t w = area->x2 - area->x1 + 1;
+  uint32_t h = area->y2 - area->y1 + 1;
 
   tft.startWrite();
   tft.setAddrWindow(area->x1, area->y1, w, h);
-  tft.pushColors((uint16_t *)&color_p->full, w * h, true);
+  tft.pushColors((uint16_t *)px_map, w * h, true);
   tft.endWrite();
 
-  lv_disp_flush_ready(disp);
+  lv_display_flush_ready(disp);
 }
 
 void setup() {
   Serial.begin(115200);
+  lv_init();
   tft.begin();
   tft.setRotation(1);
 
-  lv_init();
-  lv_disp_draw_buf_init(&draw_buf, buf, NULL, 320 * 10);
+  // 버퍼 초기화 (단일 버퍼)
+  lv_draw_buf_init(&draw_buf1, 320, 10, LV_COLOR_FORMAT_RGB565, 320, buf1, sizeof(buf1));
 
-  lv_disp_drv_init(&disp_drv);
-  disp_drv.flush_cb = my_disp_flush;
-  disp_drv.draw_buf = &draw_buf;
-  disp_drv.hor_res = 320;
-  disp_drv.ver_res = 240;
-  lv_disp_drv_register(&disp_drv);
+  // 디스플레이 생성 및 설정
+  lv_display_t *disp = lv_display_create(320, 240);
+  lv_display_set_flush_cb(disp, my_disp_flush);
+  lv_display_set_draw_buffers(disp, &draw_buf1, NULL);  // draw_buf1만 사용
 
-  lv_obj_t *label = lv_label_create(lv_scr_act());
-  lv_label_set_text(label, "Hello, LVGL on ESP32-S3!");
-  lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+  // Hello World 표시
+  lv_obj_t *label = lv_label_create(lv_screen_active());
+  lv_label_set_text(label, "Hello, World!");
+  lv_obj_center(label);
 }
 
 void loop() {
   lv_timer_handler();
   delay(5);
 }
+
+```
+
+---
+
+## 🧠 주의 사항 요약
+
+| 항목 | 설명 |
+|------|------|
+| LVGL 버전 | v9.2.2 이상 필요 |
+| 함수 이름 변경 | `lv_disp_drv_t` → `lv_display_t`, `lv_scr_act()` → `lv_screen_active()` 등 |
+| draw_buf 설정 | `lv_draw_buf_init()` 함수에 7개 인자 필요 |
+| flush_cb | `uint8_t *px_map` 사용 (v9 기준) |
+
+---
+
+## 🎓 활용 예시
+
+- IoT PLC UI 구성
+- 버튼, 그래프, 입력창 학습
+- 실제 HMI 장비 시뮬레이션 제작
+
+---
+
+
 ```
