@@ -568,4 +568,55 @@ INT         -> GPIO 33
 
 #endif /* LV_CONF_H */
 ```
+## 📁 TFT_eSPI 설정 방법
+예시 (User_Setup.h):
+```
+// ======================
+// User_Setup.h
+// for ESP32-WROOM + 3.5" ST7796 TFT + FT6336U Touch
+// ======================
 
+#define USER_SETUP_INFO "ESP32 + ST7796 + FT6336U Touch"
+
+// 1. 디스플레이 드라이버 선택
+#define ST7796_DRIVER    // ST7796 디스플레이 사용
+
+// 2. SPI 핀 설정 (ESP32 하드웨어 SPI 사용)
+#define TFT_MISO 19
+#define TFT_MOSI 23
+#define TFT_SCLK 18
+#define TFT_CS   15   // Chip Select
+#define TFT_DC    2   // Data/Command
+#define TFT_RST   4   // Reset 핀 (연결하지 않은 경우 -1 설정)
+
+// 백라이트 핀 설정 (필요시 제어)
+#define TFT_BL    32
+#define TFT_BACKLIGHT_ON HIGH
+
+// 3. 터치스크린 칩 사용 시 (FT6336U는 I2C → TFT_eSPI는 지원하지 않음)
+// 터치 제어는 별도로 lvgl 드라이버에서 설정 (여기선 제외)
+
+// 4. 디스플레이 해상도 설정 (ST7796은 480x320)
+#define TFT_WIDTH  480
+#define TFT_HEIGHT 320
+
+// 5. 폰트 설정
+#define LOAD_GLCD        // 기본 8비트 폰트
+#define LOAD_FONT2       // 소형 폰트
+#define LOAD_FONT4       // 중형 폰트
+#define LOAD_FONT6       // 대형 숫자 폰트
+#define LOAD_FONT7       // 세그먼트 숫자 폰트
+#define LOAD_FONT8       // 초대형 숫자 폰트
+#define LOAD_GFXFF       // FreeFonts 사용 (Adafruit GFX FF1~FF48)
+#define SMOOTH_FONT      // 부드러운 벡터 폰트 사용 가능
+
+// 6. SPI 통신 속도 설정
+#define SPI_FREQUENCY       40000000   // ST7796은 40MHz까지 안정적으로 작동
+#define SPI_READ_FREQUENCY  20000000   // 읽기 속도 (필요한 경우)
+#define SPI_TOUCH_FREQUENCY 2500000    // 터치용 SPI (FT6336U는 I2C이므로 무시 가능)
+
+// 7. 기타 설정
+//#define USE_HSPI_PORT      // SPI 포트 변경 (필요시 사용)
+//#define SUPPORT_TRANSACTIONS // ESP32에서는 기본 지원됨
+
+```
