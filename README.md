@@ -1,4 +1,5 @@
-
+# ESP32 환경설정
+https://dl.espressif.com/dl/package_esp32_index.json
 # ESP32 WROOM + ILI9341 + LVGL + 터치스크린 + SD 카드 연결 예제
 
 이 프로젝트는 **ESP32-S3 보드와 ILI9341 2.4"/2.8"/3.2" SPI 디스플레이**를 연결하여  
